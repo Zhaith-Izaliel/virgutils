@@ -32,6 +32,8 @@
           imagemagick
           grimblast
           bluez
+          coreutils
+          wlr-randr
         ];
       };
       default = devShells.workspaceShell;
