@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+# Power Management, a wrapper around shutdown with libnotify
+# Copyright (c) 2022 Virgil Ribeyre <https://github.com/Zhaith-Izaliel>
+# Licensed under an MIT License
+
+VERSION="2.2.2"
+
+# Icons
+ICON="system-shutdown"
+SUMMARY="Power Management"
+OUTPUT_FILE="/tmp/power-management-output.txt"
+
+#######################################
+# Show the usage
+# Globals:
+#   VM_NAME
+#   RESOLUTION
+#   VERSION
+# Arguments:
+#   None
+# Outputs:
+#   Exits with code 0
+#######################################
+usage() {
+  echo "
+Usage: power-management [OPTIONS...] [TIME] [WALL...]
+Power Management, a wrapper around shutdown with libnotify
+
+Version $VERSION
+
+Author: Ribeyre Virgil.
+Licensed: MIT.
+----------
+"
+  shutdown --help
+  exit 0
+}
+
+notify-send-all() {
+  if [ "$EUID" -ne 0 ]; then
+    notify-send "$@"
+    return
+  fi
+
+  local users=($(users))
+  for user in "${users[@]}"; do
+    export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(sudo -u $user id)/bus"
+    sudo -u "$user" notify-send "$@" &> /dev/null
+  done
+}
+
+#######################################
+# Main function of the script
+# Globals:
+#   ICON
+#   SUMMARY
+#   OUTPUT_FILE
+# Arguments:
+#   *: every arguments passed to the script
+# Outputs:
+#   None
+#######################################
+main() {
+  if [ "$1" = "--help" ]; then
+    usage
+  fi
+
+  shutdown "$*" &> $OUTPUT_FILE
+  local exit_code=$?
+
+  if [ "$exit_code" = "0" ]; then
+    if [ "$*" = "-c" ]; then
+      echo "Shutdown cancelled." > $OUTPUT_FILE
+    fi
+
+    cat $OUTPUT_FILE
+    notify-send-all -t 2000 -i "$ICON" "$SUMMARY" "$(cat $OUTPUT_FILE)"
+    rm $OUTPUT_FILE
+  fi
+  exit $exit_code
+}
+
+# Trap the exit of the program to ensure clean up of the lignering processes.
+main $*
+
