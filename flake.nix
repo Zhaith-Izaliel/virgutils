@@ -13,6 +13,7 @@
   outputs = { nixpkgs, hyprwm-contrib, ...}:
   let
     system  = "x86_64-linux";
+    version  = "1.0.0";
   in
   with import nixpkgs { inherit system; };
   rec {
@@ -33,6 +34,7 @@
           imagemagick
           hyprwm-contrib.packages.${system}.grimblast
           bluez
+          gnugrep
           coreutils
           wlr-randr
         ];
@@ -41,6 +43,17 @@
     };
 
     packages.${system} = {
+      dim-on-lock = pkgs.callPackage ./dim-on-lock { inherit version; };
+      double-display = pkgs.callPackage ./double-display { inherit version; };
+      nix-npm-install = pkgs.callPackage ./nix-npm-install { inherit version; };
+      power-management = pkgs.callPackage ./power-management { inherit version; };
+      start-vm = pkgs.callPackage ./start-vm { inherit version; };
+      toggle-bluetooth = pkgs.callPackage ./toggle-bluetooth { inherit version; };
+      volume-brightness = pkgs.callPackage ./volume-brightness { inherit version; };
+      wlogout-blur = pkgs.callPackage ./wlogout-blur {
+        grimblast = hyprwm-contrib.packages.${system}.grimblast;
+        inherit version;
+      };
     };
 
     overlays.default = [

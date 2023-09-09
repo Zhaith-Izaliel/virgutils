@@ -1,23 +1,18 @@
-{ pkgs }:
+{ pkgs, version }:
 
-pkgs.callPackage ../builder.nix rec {
+pkgs.callPackage ../builder.nix {
   pname = "power-management";
 
-  version = "v2.2.2";
+  inherit version;
 
-  src = pkgs.fetchFromGitLab {
-    repo = pname;
-    owner = "Zhaith-Izaliel";
-    rev = version;
-    sha256 = "sha256-celAGElQzhaapBWrMmK+9Fy03CoRHEosdGTrk8NUEUw=";
-  };
+  src = ./.;
 
   buildInputs = with pkgs; [
     bash
   ];
 
   paths = with pkgs; [
-    libnotify
+    dunst
     gnugrep
     sudo
     coreutils

@@ -1,16 +1,11 @@
-{ pkgs }:
+{ pkgs, version }:
 
-pkgs.callPackage ../builder.nix rec {
+pkgs.callPackage ../builder.nix {
   pname = "toggle-bluetooth";
 
-  version = "1.0.0";
+  inherit version;
 
-  src = pkgs.fetchFromGitLab {
-    repo = pname;
-    owner = "Zhaith-Izaliel";
-    rev = "v${version}";
-    sha256 = "sha256-gZNGefuArSpWRicPBXUfC28Ilq6kYLBu7PcnSqlQYfw=";
-  };
+  src = ./.;
 
   buildInputs = with pkgs; [
     bash
@@ -20,7 +15,6 @@ pkgs.callPackage ../builder.nix rec {
     bluez
     bash
     gnugrep
-    coreutils
   ];
 }
 

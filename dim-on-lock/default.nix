@@ -1,16 +1,11 @@
-{ pkgs }:
+{ pkgs, version }:
 
-pkgs.callPackage ../builder.nix rec {
+pkgs.callPackage ../builder.nix {
   pname = "dim-on-lock";
 
-  version = "v1.1.0";
+  inherit version;
 
-  src = pkgs.fetchFromGitLab {
-    repo = pname;
-    owner = "Zhaith-Izaliel";
-    rev = version;
-    sha256 = "sha256-PkkLHkwPYcsfMf5LkeK8w8ZxpKxVuiWq3c3FK5MODL8=";
-  };
+  src = ./.;
 
   buildInputs = with pkgs; [
     bash

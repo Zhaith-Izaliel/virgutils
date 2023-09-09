@@ -1,16 +1,11 @@
-{ pkgs }:
+{ pkgs, version, grimblast }:
 
-pkgs.callPackage ../builder.nix rec {
+pkgs.callPackage ../builder.nix {
   pname = "wlogout-blur";
 
-  version = "1.0.0";
+  inherit version;
 
-  src = pkgs.fetchFromGitLab {
-    repo = pname;
-    owner = "Zhaith-Izaliel";
-    rev = "v${version}";
-    sha256 = "sha256-mInyb108jKRMMmqgztm45JN8XOpyNCe56xjKIArj1Cw=";
-  };
+  src = ./.;
 
   buildInputs = with pkgs; [
     bash

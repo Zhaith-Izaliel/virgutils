@@ -1,16 +1,11 @@
-{ pkgs }:
+{ pkgs, version }:
 
-pkgs.callPackage ../builder.nix rec {
+pkgs.callPackage ../builder.nix {
   pname = "volume-brightness";
 
-  version = "v1.0.0";
+  inherit version;
 
-  src = pkgs.fetchFromGitLab {
-    repo = pname;
-    owner = "Zhaith-Izaliel";
-    rev = version;
-    sha256 = "sha256-z7ulwjulMlDfvyty8N+WRo1DBqjFComADjB1Ko4sH/w=";
-  };
+  src = ./.;
 
   buildInputs = with pkgs; [
     bash

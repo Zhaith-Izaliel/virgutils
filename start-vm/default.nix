@@ -1,16 +1,11 @@
-{ pkgs }:
+{ pkgs, version }:
 
-pkgs.callPackage ../builder.nix rec {
+pkgs.callPackage ../builder.nix {
   pname = "start-vm";
 
-  version = "v2.2.0";
+  inherit version;
 
-  src = pkgs.fetchFromGitLab {
-    repo = pname;
-    owner = "Zhaith-Izaliel";
-    rev = version;
-    sha256 = "sha256-c/FIIYjsbRK3jQeXjN+8EIkoyTa7CmyB2XSwCIAaiMY=";
-  };
+  src = ./.;
 
   buildInputs = with pkgs; [
     bash
