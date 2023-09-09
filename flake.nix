@@ -7,15 +7,16 @@
       url = "github:edolstra/flake-compat";
       flake = false;
     };
+    hyprwm-contrib.url = "github:hyprwm/contrib";
   };
 
-  outputs = { self, nixpkgs }:
+  outputs = { nixpkgs, hyprwm-contrib, ...}:
   let
     system  = "x86_64-linux";
   in
   with import nixpkgs { inherit system; };
   rec {
-    devShells = {
+    devShells.${system} = {
       workspaceShell = pkgs.mkShell {
         nativeBuildInputs = with pkgs; [
           bashInteractive
@@ -30,13 +31,13 @@
           sudo
           wlogout
           imagemagick
-          grimblast
+          hyprwm-contrib.packages.${system}.grimblast
           bluez
           coreutils
           wlr-randr
         ];
       };
-      default = devShells.workspaceShell;
+      default = devShells.${system}.workspaceShell;
     };
 
     packages.${system} = {
