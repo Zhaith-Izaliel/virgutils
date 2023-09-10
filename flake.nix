@@ -56,9 +56,7 @@
       };
     };
 
-    overlays.default = [
-      (final: prev: packages.${system})
-    ];
+    overlays.default = final: prev: packages.${system};
   };
 }
 
