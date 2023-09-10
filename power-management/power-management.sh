@@ -77,7 +77,7 @@ main() {
     fi
 
     cat $OUTPUT_FILE
-    dunsitfy-all -t 2000 -i "$ICON" "$SUMMARY" "$(cat $OUTPUT_FILE)"
+    dunsitfy-all -u 2 -t 6000 -i "$ICON" "$SUMMARY" "$(cat $OUTPUT_FILE)"
   fi
   rm $OUTPUT_FILE
   exit $exit_code
