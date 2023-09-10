@@ -23,13 +23,13 @@
           bashInteractive
           brightnessctl
           dunst
+          libnotify
           looking-glass-client
           virt-manager
           wireplumber
           gawk
           bc
           gnused
-          sudo
           wlogout
           imagemagick
           hyprwm-contrib.packages.${system}.grimblast

@@ -43,9 +43,12 @@ notify-send-all() {
   fi
 
   local users=($(users))
-  for user in "${users[@]}"; do
-    export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(sudo -u $user id)/bus"
-    sudo -u "$user" notify-send "$@" &> /dev/null
+  for user_name in "${users[@]}"; do
+    local
+    sudo -u "$user_name" \
+      DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u $user_name)/bus" \
+      DISPLAY=":0" \
+      notify-send "$@"
   done
 }
 
@@ -75,8 +78,8 @@ main() {
 
     cat $OUTPUT_FILE
     notify-send-all -t 2000 -i "$ICON" "$SUMMARY" "$(cat $OUTPUT_FILE)"
-    rm $OUTPUT_FILE
   fi
+  rm $OUTPUT_FILE
   exit $exit_code
 }
 

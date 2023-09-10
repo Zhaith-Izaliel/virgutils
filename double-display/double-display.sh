@@ -69,6 +69,9 @@ function turn-off-display() {
 }
 
 function main() {
+  # FIXME: update the script to use wlr-randr
+  echo "This script is not working as is, let me fix it first"
+  exit 1
   check-if-double-display
   while getopts "hv-:" ARGS; do
     case "${ARGS}" in
@@ -153,3 +156,4 @@ function main() {
 }
 
 main "$*"
+
