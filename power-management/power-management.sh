@@ -36,9 +36,9 @@ Licensed: MIT.
   exit 0
 }
 
-notify-send-all() {
+dunsitfy-all() {
   if [ "$EUID" -ne 0 ]; then
-    notify-send "$@"
+    dunstify "$@"
     return
   fi
 
@@ -48,7 +48,7 @@ notify-send-all() {
     sudo -u "$user_name" \
       DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u $user_name)/bus" \
       DISPLAY=":0" \
-      notify-send "$@"
+      dunstify "$@"
   done
 }
 
@@ -77,7 +77,7 @@ main() {
     fi
 
     cat $OUTPUT_FILE
-    notify-send-all -t 2000 -i "$ICON" "$SUMMARY" "$(cat $OUTPUT_FILE)"
+    dunsitfy-all -t 2000 -i "$ICON" "$SUMMARY" "$(cat $OUTPUT_FILE)"
   fi
   rm $OUTPUT_FILE
   exit $exit_code
