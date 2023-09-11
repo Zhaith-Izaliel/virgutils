@@ -11,7 +11,7 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { nixpkgs, flake-utils, ... }:
+  outputs = { nixpkgs, flake-utils, hyprwm-contrib, ... }:
   flake-utils.lib.eachDefaultSystem (system:
   let
     version  = "1.1.1";
