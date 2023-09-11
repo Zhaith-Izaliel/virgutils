@@ -14,7 +14,7 @@
   outputs = { self, nixpkgs, flake-utils, ... }:
   flake-utils.lib.eachDefaultSystem (system:
   let
-    version  = "1.1.0";
+    version  = "1.1.1";
   in
   with import nixpkgs { inherit system; };
   rec {
