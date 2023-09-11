@@ -11,7 +11,7 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = inputs: with inputs;
+  outputs = { self, nixpkgs, flake-utils, ... }:
   flake-utils.lib.eachDefaultSystem (system:
   let
     version  = "1.1.0";
@@ -56,8 +56,6 @@
         inherit version;
       };
     };
-
-    overlays.default = final: prev: packages;
-  });
+  }) // { overlays.default = final: prev: self.packages; };
 }
 
