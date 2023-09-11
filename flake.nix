@@ -8,16 +8,17 @@
       flake = false;
     };
     hyprwm-contrib.url = "github:hyprwm/contrib";
+    flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { nixpkgs, hyprwm-contrib, ...}:
+  outputs = inputs: with inputs;
+  flake-utils.lib.eachDefaultSystem (system:
   let
-    system  = "x86_64-linux";
-    version  = "1.0.0";
+    version  = "1.1.0";
   in
   with import nixpkgs { inherit system; };
   rec {
-    devShells.${system} = {
+    devShells = {
       workspaceShell = pkgs.mkShell {
         nativeBuildInputs = with pkgs; [
           bashInteractive
@@ -39,10 +40,10 @@
           wlr-randr
         ];
       };
-      default = devShells.${system}.workspaceShell;
+      default = devShells.workspaceShell;
     };
 
-    packages.${system} = {
+    packages = {
       dim-on-lock = pkgs.callPackage ./dim-on-lock { inherit version; };
       double-display = pkgs.callPackage ./double-display { inherit version; };
       nix-npm-install = pkgs.callPackage ./nix-npm-install { inherit version; };
@@ -56,7 +57,7 @@
       };
     };
 
-    overlays.default = final: prev: packages.${system};
-  };
+    overlays.default = final: prev: packages;
+  });
 }
 
