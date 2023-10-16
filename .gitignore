@@ -25,4 +25,5 @@ tags
 
 # Nix build output
 result*
+.direnv
 

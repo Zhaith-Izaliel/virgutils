@@ -60,7 +60,7 @@ main() {
 
     "dim")
       brightnessctl --save
-      brightnessctl set "${2}%-"
+      brightnessctl --min-value="5000" set "${2}%-"
     ;;
 
     "undim")
