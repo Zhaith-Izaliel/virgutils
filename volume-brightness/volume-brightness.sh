@@ -76,8 +76,10 @@ set_volume() {
   local current="$(echo "scale=1; $current_float*100" | bc | sed 's/\..*$//')"
   local percent="$((100*$current/$max))"
 
-  echo "$current"
-  if (($current > 100)); then
+  if (($current == 100)); then
+    dunstify -u low -h "int:value:${percent}" "Volume"
+    return $?
+  elif (($current > 100)); then
     dunstify -u critical -h "int:value:${percent}" "Volume"
     return $?
   fi
