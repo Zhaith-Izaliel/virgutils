@@ -11,7 +11,7 @@ if [ ! -d "$SCREENSHOTS_FOLDER" ]; then
   mkdir -p "$SCREENSHOTS_FOLDER"
 fi
 
-grimblast --freeze --notify copysave "$1" "${SCREENSHOTS_FOLDER}$(date +%F:%H:%M:%S).png" &
+grimblast --freeze --notify copysave "$1" "${SCREENSHOTS_FOLDER}/$(date +%F:%H:%M:%S).png" &
 pid=$!
 
 echo "$pid" > "$GRIMBLAST_PID_FILE"
