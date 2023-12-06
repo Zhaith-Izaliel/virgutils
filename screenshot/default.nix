@@ -1,7 +1,7 @@
 { pkgs, version, grimblast }:
 
 pkgs.callPackage ../builder.nix {
-  pname = "wlogout-blur";
+  pname = "screenshot";
 
   inherit version;
 
@@ -11,9 +11,7 @@ pkgs.callPackage ../builder.nix {
     bash
   ];
 
-  paths = with pkgs; [
-    imagemagick
-    wlogout
+  paths = [
     grimblast
   ];
 }

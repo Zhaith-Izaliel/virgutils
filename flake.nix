@@ -14,7 +14,7 @@
   outputs = { nixpkgs, flake-utils, hyprwm-contrib, ... }:
   flake-utils.lib.eachDefaultSystem (system:
   let
-    version  = "1.1.4";
+    version  = "1.2.0";
   in
   with import nixpkgs { inherit system; };
   rec {
@@ -52,6 +52,10 @@
       toggle-bluetooth = pkgs.callPackage ./toggle-bluetooth { inherit version; };
       volume-brightness = pkgs.callPackage ./volume-brightness { inherit version; };
       wlogout-blur = pkgs.callPackage ./wlogout-blur {
+        grimblast = hyprwm-contrib.packages.${system}.grimblast;
+        inherit version;
+      };
+      screenshot = pkgs.callPackage ./screenshot {
         grimblast = hyprwm-contrib.packages.${system}.grimblast;
         inherit version;
       };
