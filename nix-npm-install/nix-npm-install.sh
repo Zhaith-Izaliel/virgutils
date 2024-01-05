@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 TEMPDIR="/tmp/nix-npm-install/"
-VERSION="1.0.2"
+VERSION="1.4.2"
 PACKAGE_NAME=""
 PACKAGE_VERSION=""
 
@@ -110,3 +110,4 @@ main() {
 }
 
 main "$*"
+
