@@ -113,8 +113,8 @@ function get_tooltip_history() {
     fi
   done
 
-
-  echo "$accumulator" | recode html..ISO-8859-1
+  echo "$accumulator"
+  # | recode html..ISO-8859-1
 }
 
 function parse_info() {
