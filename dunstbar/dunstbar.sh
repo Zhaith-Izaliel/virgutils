@@ -112,8 +112,11 @@ function get_tooltip_history() {
 
 function parse_info() {
   if dunstctl is-paused | grep -q "false"; then
+    local count_history=$(dunstctl count history)
+    local count_displayed=$(dunstctl count displayed)
+    local count=$(($count_history+$count_displayed))
     OUTPUT=$(echo $OUTPUT | jq \
-      ".text = $(dunstctl count history) | .alt = \"not-paused\" | .class = .alt"
+      ".text = $count | .alt = \"not-paused\" | .class = .alt"
     )
   else
     OUTPUT=$(echo $OUTPUT | jq \
