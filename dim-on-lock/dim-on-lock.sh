@@ -3,7 +3,7 @@
 # Copyright (c) 2022 Virgil Ribeyre <https://github.com/Zhaith-Izaliel>
 # Licensed under an MIT License
 
-VERSION="1.4.3"
+VERSION="1.4.4"
 DIM_VALUE=""
 
 #######################################
