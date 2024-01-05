@@ -16,6 +16,7 @@ pkgs.callPackage ../builder.nix {
     jq
     coreutils
     gnused
+    gnugrep
     recode
   ];
 }
