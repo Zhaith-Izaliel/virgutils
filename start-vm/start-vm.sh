@@ -3,7 +3,7 @@
 # Copyright (c) 2021 Virgil Ribeyre <https://github.com/Zhaith-Izaliel>
 # Licensed under an MIT License
 
-VERSION="2.2.0"
+VERSION="1.4.2"
 
 # Options
 ## The VM Name in Virsh
@@ -402,3 +402,4 @@ main() {
 # Trap the exit of the program to ensure clean up of the lignering processes.
 trap clean-up-exit EXIT
 main "$*"
+

@@ -14,7 +14,7 @@
   outputs = { nixpkgs, flake-utils, hyprwm-contrib, ... }:
   flake-utils.lib.eachDefaultSystem (system:
   let
-    version  = "1.4.1";
+    version  = "1.4.2";
   in
   with import nixpkgs { inherit system; };
   rec {
@@ -36,8 +36,10 @@
           hyprwm-contrib.packages.${system}.grimblast
           bluez
           gnugrep
+          gnused
           coreutils
           wlr-randr
+          recode
         ];
       };
       default = devShells.workspaceShell;
@@ -59,6 +61,7 @@
         grimblast = hyprwm-contrib.packages.${system}.grimblast;
         inherit version;
       };
+      dunstbar = pkgs.callPackage ./dunstbar { inherit version; };
     };
 
     overlays.default = final: prev: packages;
