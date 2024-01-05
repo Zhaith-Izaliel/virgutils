@@ -110,7 +110,7 @@ function get_tooltip_history() {
   echo "$accumulator" | recode html..ISO-8859-1
 }
 
-function get_info() {
+function parse_info() {
   dunstctl is-paused | grep -q "false"
   local is_paused="$?"
   if [ "$is_paused" = "1" ]; then
@@ -126,6 +126,13 @@ function get_info() {
 
   OUTPUT=$(echo $OUTPUT | jq ".tooltip = \"$tooltip\"")
   echo $OUTPUT
+}
+
+function get_info() {
+  while true; do
+    parse_info
+    sleep 1
+  done
 }
 
 function main() {
