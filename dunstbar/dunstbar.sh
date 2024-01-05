@@ -111,11 +111,9 @@ function get_tooltip_history() {
 }
 
 function get_info() {
-  # TODO: Update the $OUTPUT variable depending on the values reported by
-  # dunstctl:
-  # - "tooltip": Corresponds of every "message" key from the history, on the
-  #   last ${HISTORY_SIZE}-th messages
-  if dunstctl is-paused | grep -q "false"; then
+  dunstctl is-paused | grep -q "false"
+  local is_paused="$?"
+  if [ "$is_paused" = "1" ]; then
     OUTPUT=$(echo $OUTPUT | jq \
       ".text = $(dunstctl count history) | .alt = \"not-paused\" | .class = .alt"
     )
