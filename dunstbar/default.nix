@@ -14,6 +14,9 @@ pkgs.callPackage ../builder.nix {
   paths = with pkgs; [
     dunst
     jq
+    coreutils
+    gnused
+    recode
   ];
 }
 

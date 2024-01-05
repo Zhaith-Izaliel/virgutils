@@ -11,11 +11,10 @@ NC="\033[0m" # No Color
 COUNT=0
 HISTORY_SIZE=20
 OUTPUT='{
-  "text": 0,
+  "text": "",
   "alt": "",
   "tooltip": "",
-  "class": "",
-  "percentage": 0
+  "class": ""
 }'
 
 
@@ -47,7 +46,7 @@ ARGUMENTS
 
   -c, --clear-history             Clear notification history.
 
-  -j, --info                      Get dunst info in JSON format for Waybar.
+  -i, --info                      Get dunst info in JSON format for Waybar.
 
 SETTINGS
       --history=size              Defines the max number of messages reported in the history. Default to $HISTORY_SIZE.
@@ -55,21 +54,80 @@ SETTINGS
   exit 0
 }
 
+dunst_ts_to_unix() {
+  # Convert DUNST_TIMESTAMP from ns to seconds
+  local dunst_ts=$(( $1 / 1000 / 1000))
+  # Get seconds since boot
+  local seconds_uptime=$(date +%s -d@$(cut -d' ' -f1 /proc/uptime))
+  # Get seconds as UNIX timestamp
+  local ts_now=$(date +%s)
+  # Print the diff of: NOW - (uptime - dunst-timestamp)
+  printf %d $((ts_now - seconds_uptime + dunst_ts))
+}
+
+strip_quotes() {
+  sed -e 's/^"//' -e 's/"$//' <<< "$1"
+}
+
+function calculate_date_from_timestamps() {
+  date +'%F %T' -d @$(dunst_ts_to_unix $1)
+}
+
+function get_tooltip_history() {
+  local history=$(echo "$(dunstctl history)" | jq "first(.data.[]) | .[0:${HISTORY_SIZE}]")
+
+  local cleaned_history=$(echo $history | jq '
+    map(
+      {
+        body: .body.data,
+        summary: ("<b>" + .summary.data + "</b>"),
+        timestamp: .timestamp.data
+      }
+    )'
+  )
+
+  local length=$(echo "$cleaned_history" | jq "length")
+  local end=$(($length-1))
+
+  local accumulator=""
+  for i in $(seq 0 $end); do
+    local timestamp=$(echo $cleaned_history | jq "nth($i) | .timestamp")
+
+    local summary=$(echo $cleaned_history | jq "nth($i) | .summary")
+    summary=$(strip_quotes "$summary")
+
+    local body=$(echo $cleaned_history | jq "nth($i) | .body")
+    body=$(strip_quotes "$body")
+
+    accumulator="${accumulator}${summary}\n🕗<i>$(calculate_date_from_timestamps $timestamp)</i>\n${body}\n\n"
+  done
+
+
+  echo "$accumulator" | recode html..ISO-8859-1
+}
+
 function get_info() {
   # TODO: Update the $OUTPUT variable depending on the values reported by
   # dunstctl:
-  # - "text":
-  #   - If Dunst is paused: `dunstctl count waiting`
-  #   - Else: `dunstctl count history`
-  # - "alt": unused
   # - "tooltip": Corresponds of every "message" key from the history, on the
   #   last ${HISTORY_SIZE}-th messages
-  # - "class": `waiting` if `dunstctl is-paused` = true, empty otherwise
-  # - percentage: unused
+  if dunstctl is-paused | grep -q "false"; then
+    OUTPUT=$(echo $OUTPUT | jq \
+      ".text = $(dunstctl count history) | .alt = \"not-paused\" | .class = .alt"
+    )
+  else
+    OUTPUT=$(echo $OUTPUT | jq \
+      ".text = $(dunstctl count waiting) | .alt = \"paused\" | .class = .alt"
+    )
+  fi
+  local tooltip=$(get_tooltip_history)
+
+  OUTPUT=$(echo $OUTPUT | jq ".tooltip = \"$tooltip\"")
+  echo $OUTPUT
 }
 
 function main() {
-  while getopts "hvp-:" ARGS; do
+  while getopts "hvpi-:" ARGS; do
     case "${ARGS}" in
       -)
         case "${OPTARG}" in
@@ -115,7 +173,7 @@ function main() {
       c)
         dunstctl history-clear
         ;;
-      -i)
+      i)
         get_info
         ;;
       *)
@@ -125,14 +183,6 @@ function main() {
     esac
   done
 }
-
-ENABLED=""
-DISABLED=""
-
-if [ $COUNT != 0 ]; then
-  DISABLED="  $COUNT";
-fi
-if dunstctl is-paused | grep -q "false" ; then echo $ENABLED; else echo $DISABLED; fi
 
 main $*
 
