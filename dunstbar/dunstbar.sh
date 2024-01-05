@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="1.4.2"
+VERSION="1.4.3"
 
 # Print colors
 RED="\033[0;31m"
@@ -110,14 +110,13 @@ function get_tooltip_history() {
   echo "$accumulator" | recode html..ISO-8859-1
 }
 
-function get_info() {
-  # TODO: Update the $OUTPUT variable depending on the values reported by
-  # dunstctl:
-  # - "tooltip": Corresponds of every "message" key from the history, on the
-  #   last ${HISTORY_SIZE}-th messages
+function parse_info() {
   if dunstctl is-paused | grep -q "false"; then
+    local count_history=$(dunstctl count history)
+    local count_displayed=$(dunstctl count displayed)
+    local count=$(($count_history+$count_displayed))
     OUTPUT=$(echo $OUTPUT | jq \
-      ".text = $(dunstctl count history) | .alt = \"not-paused\" | .class = .alt"
+      ".text = $count | .alt = \"not-paused\" | .class = .alt"
     )
   else
     OUTPUT=$(echo $OUTPUT | jq \
@@ -126,8 +125,24 @@ function get_info() {
   fi
   local tooltip=$(get_tooltip_history)
 
-  OUTPUT=$(echo $OUTPUT | jq ".tooltip = \"$tooltip\"")
-  echo $OUTPUT
+  echo $OUTPUT | jq --unbuffered --compact-output ".tooltip = \"$tooltip\""
+}
+
+show_error() {
+  echo $OUTPUT | jq --unbuffered --compact-output '.text = "ERROR" | .alt = "error" | .class = .alt | .tooltip = "An error has occured, please check the script."'
+}
+
+function get_info() {
+  parse_info
+  local is_success=$?
+  while [ "$is_success" = "0" ]; do
+    sleep 1
+    parse_info
+    is_success=$?
+  done
+  if [ "$is_success" != "0" ]; then
+    show_error
+  fi
 }
 
 function main() {
