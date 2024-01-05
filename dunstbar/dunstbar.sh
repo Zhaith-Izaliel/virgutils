@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="1.4.3"
+VERSION="1.4.4"
 
 # Print colors
 RED="\033[0;31m"
@@ -70,7 +70,7 @@ strip_quotes() {
 }
 
 function calculate_date_from_timestamps() {
-  date +'%F %T' -d @$(dunst_ts_to_unix $1)
+  date +'%F %H:%M' -d @$(dunst_ts_to_unix $1)
 }
 
 function get_tooltip_history() {
@@ -102,8 +102,15 @@ function get_tooltip_history() {
 
     local body=$(echo $cleaned_history | jq "nth($i) | .body")
     body=$(strip_quotes "$body")
+    if [ "$i" != "0" ]; then
+      accumulator="${accumulator}\n\n"
+    fi
 
-    accumulator="${accumulator}${summary}\n🕗<i>$(calculate_date_from_timestamps $timestamp)</i>\n${body}\n\n"
+    if [ "$body" = "" ]; then
+      accumulator="${accumulator}${summary}\n🕗<i>$(calculate_date_from_timestamps $timestamp)</i>"
+    else
+      accumulator="${accumulator}${summary}\n🕗<i>$(calculate_date_from_timestamps $timestamp)</i>\n${body}"
+    fi
   done
 
 
