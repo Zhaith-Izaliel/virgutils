@@ -17,7 +17,6 @@ pkgs.callPackage ../builder.nix {
     coreutils
     gnused
     gnugrep
-    recode
   ];
 }
 
