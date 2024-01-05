@@ -87,8 +87,12 @@ function get_tooltip_history() {
   )
 
   local length=$(echo "$cleaned_history" | jq "length")
-  local end=$(($length-1))
+  if [ "$length" = "0" ]; then
+    echo "🍂 No notifications in history yet."
+    return
+  fi
 
+  local end=$(($length-1))
   local accumulator=""
   for i in $(seq 0 $end); do
     local timestamp=$(echo $cleaned_history | jq "nth($i) | .timestamp")
@@ -127,7 +131,7 @@ function get_info() {
 }
 
 function main() {
-  while getopts "hvpi-:" ARGS; do
+  while getopts "hvpci-:" ARGS; do
     case "${ARGS}" in
       -)
         case "${OPTARG}" in
