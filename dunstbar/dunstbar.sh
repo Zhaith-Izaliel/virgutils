@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="1.4.4"
+VERSION="1.4.5"
 
 # Print colors
 RED="\033[0;31m"
@@ -113,8 +113,8 @@ function get_tooltip_history() {
     fi
   done
 
-
-  echo "$accumulator" | recode html..ISO-8859-1
+  echo "$accumulator"
+  # | recode html..ISO-8859-1
 }
 
 function parse_info() {

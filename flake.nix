@@ -14,7 +14,7 @@
   outputs = { nixpkgs, flake-utils, hyprwm-contrib, ... }:
   flake-utils.lib.eachDefaultSystem (system:
   let
-    version  = "1.4.4";
+    version  = "1.4.5";
   in
   with import nixpkgs { inherit system; };
   rec {
