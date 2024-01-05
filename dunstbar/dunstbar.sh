@@ -125,15 +125,24 @@ function parse_info() {
   fi
   local tooltip=$(get_tooltip_history)
 
-  OUTPUT=$(echo $OUTPUT | jq ".tooltip = \"$tooltip\"")
-  echo $OUTPUT
+  echo $OUTPUT | jq --unbuffered --compact-output ".tooltip = \"$tooltip\""
+}
+
+show_error() {
+  echo $OUTPUT | jq --unbuffered --compact-output '.text = "ERROR" | .alt = "error" | .class = .alt | .tooltip = "An error has occured, please check the script."'
 }
 
 function get_info() {
-  while true; do
-    parse_info
+  parse_info
+  local is_success=$?
+  while [ "$is_success" = "0" ]; do
     sleep 1
+    parse_info
+    is_success=$?
   done
+  if [ "$is_success" != "0" ]; then
+    show_error
+  fi
 }
 
 function main() {
