@@ -39,7 +39,6 @@
           gnused
           coreutils
           wlr-randr
-          recode
         ];
       };
       default = devShells.workspaceShell;
