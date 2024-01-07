@@ -25,7 +25,7 @@ usage() {
   echo "
 Usage: power-profilesbar [ARGUMENTS]
 
-An utility to get power-profiles info from PowerProfiles, in order to pass them to Waybar.
+An utility to get power-profiles info from power-profiles-daemon, in order to pass them to Waybar.
 
 Version $VERSION
 
