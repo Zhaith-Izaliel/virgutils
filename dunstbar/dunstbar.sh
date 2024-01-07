@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="1.4.5"
+VERSION="1.5.0"
 
 # Print colors
 RED="\033[0;31m"
@@ -26,7 +26,7 @@ err() {
   pretty-print "${RED}$*${NC}" >&2
 }
 
-function usage() {
+usage() {
   echo "
 Usage: dunstbar [SETTINGS] [ARGUMENTS]
 
@@ -69,11 +69,11 @@ strip_quotes() {
   sed -e 's/^"//' -e 's/"$//' <<< "$1"
 }
 
-function calculate_date_from_timestamps() {
+calculate_date_from_timestamps() {
   date +'%F %H:%M' -d @$(dunst_ts_to_unix $1)
 }
 
-function get_tooltip_history() {
+get_tooltip_history() {
   local history=$(echo "$(dunstctl history)" | jq "first(.data.[]) | .[0:${HISTORY_SIZE}]")
 
   local cleaned_history=$(echo $history | jq '
@@ -116,7 +116,7 @@ function get_tooltip_history() {
   echo "$accumulator"
 }
 
-function parse_info() {
+parse_info() {
   if dunstctl is-paused | grep -q "false"; then
     local count_history=$(dunstctl count history)
     local count_displayed=$(dunstctl count displayed)
@@ -138,7 +138,7 @@ show_error() {
   echo $OUTPUT | jq --unbuffered --compact-output '.text = "ERROR" | .alt = "error" | .class = .alt | .tooltip = "An error has occured, please check the script."'
 }
 
-function get_info() {
+get_info() {
   parse_info
   local is_success=$?
   while [ "$is_success" = "0" ]; do
@@ -151,7 +151,7 @@ function get_info() {
   fi
 }
 
-function main() {
+main() {
   while getopts "hvpci-:" ARGS; do
     case "${ARGS}" in
       -)
