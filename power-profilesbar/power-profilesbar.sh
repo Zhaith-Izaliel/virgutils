@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="1.5.0"
+VERSION="1.5.1"
 OUTPUT='{
   "text": "",
   "alt": "",
@@ -61,7 +61,7 @@ get_info() {
   parse_info
   local is_success=$?
   while [ "$is_success" = "0" ]; do
-    sleep 1
+    sleep 30
     parse_info
     is_success=$?
   done
