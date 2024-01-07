@@ -14,7 +14,7 @@
   outputs = { nixpkgs, flake-utils, hyprwm-contrib, ... }:
   flake-utils.lib.eachDefaultSystem (system:
   let
-    version  = "1.4.5";
+    version  = "1.5.0";
   in
   with import nixpkgs { inherit system; };
   rec {
@@ -39,6 +39,7 @@
           gnused
           coreutils
           wlr-randr
+          power-profiles-daemon
         ];
       };
       default = devShells.workspaceShell;
@@ -61,6 +62,7 @@
         inherit version;
       };
       dunstbar = pkgs.callPackage ./dunstbar { inherit version; };
+      power-profilesbar = pkgs.callPackage ./power-profilesbar { inherit version; };
     };
 
     overlays.default = final: prev: packages;
