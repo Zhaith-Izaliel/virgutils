@@ -3,7 +3,7 @@
 # Copyright (c) 2021 Virgil Ribeyre <https://github.com/Zhaith-Izaliel>
 # Licensed under an MIT License
 
-VERSION="1.5.1"
+VERSION="1.6.0"
 
 # Options
 ## The VM Name in Virsh
@@ -150,12 +150,12 @@ err() {
 #######################################
 looking-glass() {
   looking-glass-client -m 97 \
-    -c DXGI \
     egl:scale=1 \
     egl:doubleBuffer=yes \
     win:size=$RESOLUTION \
     win:title=$VM_NAME \
     win:fullScreen=$FULLSCREEN
+    # -c DXGI \
 }
 
 #######################################
