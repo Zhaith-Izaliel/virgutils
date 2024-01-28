@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 TEMPDIR="/tmp/nix-npm-install/"
-VERSION="1.7.0"
+VERSION="1.7.1"
 PACKAGE_NAME=""
 PACKAGE_VERSION=""
 
@@ -73,7 +73,7 @@ install-package() {
     package="[\"$PACKAGE_NAME\"]"
   fi
 
-  node2nix --input <(echo "$package")
+  node2nix -18 --input <(echo "$package")
   nix-env -f default.nix -iA "$PACKAGE_NAME"
 
   popd || exit 1

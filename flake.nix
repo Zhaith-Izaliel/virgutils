@@ -11,61 +11,64 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { nixpkgs, flake-utils, hyprwm-contrib, ... }:
-  flake-utils.lib.eachDefaultSystem (system:
-  let
-    version  = "1.7.0";
-  in
-  with import nixpkgs { inherit system; };
-  rec {
-    devShells = {
-      workspaceShell = pkgs.mkShell {
-        nativeBuildInputs = with pkgs; [
-          bashInteractive
-          brightnessctl
-          dunst
-          libnotify
-          looking-glass-client
-          virt-manager
-          wireplumber
-          gawk
-          bc
-          gnused
-          wlogout
-          imagemagick
-          hyprwm-contrib.packages.${system}.grimblast
-          bluez
-          gnugrep
-          gnused
-          coreutils
-          wlr-randr
-          power-profiles-daemon
-        ];
-      };
-      default = devShells.workspaceShell;
-    };
+  outputs = {
+    nixpkgs,
+    flake-utils,
+    hyprwm-contrib,
+    ...
+  }:
+    flake-utils.lib.eachDefaultSystem (system: let
+      version = "1.7.1";
+    in
+      with import nixpkgs {inherit system;}; rec {
+        devShells = {
+          workspaceShell = pkgs.mkShell {
+            nativeBuildInputs = with pkgs; [
+              bashInteractive
+              brightnessctl
+              dunst
+              libnotify
+              looking-glass-client
+              virt-manager
+              wireplumber
+              gawk
+              bc
+              gnused
+              wlogout
+              imagemagick
+              hyprwm-contrib.packages.${system}.grimblast
+              bluez
+              gnugrep
+              gnused
+              coreutils
+              wlr-randr
+              power-profiles-daemon
+              node2nix
+            ];
+          };
+          default = devShells.workspaceShell;
+        };
 
-    packages = {
-      dim-on-lock = pkgs.callPackage ./dim-on-lock { inherit version; };
-      double-display = pkgs.callPackage ./double-display { inherit version; };
-      nix-npm-install = pkgs.callPackage ./nix-npm-install { inherit version; };
-      power-management = pkgs.callPackage ./power-management { inherit version; };
-      start-vm = pkgs.callPackage ./start-vm { inherit version; };
-      toggle-bluetooth = pkgs.callPackage ./toggle-bluetooth { inherit version; };
-      volume-brightness = pkgs.callPackage ./volume-brightness { inherit version; };
-      wlogout-blur = pkgs.callPackage ./wlogout-blur {
-        grimblast = hyprwm-contrib.packages.${system}.grimblast;
-        inherit version;
-      };
-      screenshot = pkgs.callPackage ./screenshot {
-        grimblast = hyprwm-contrib.packages.${system}.grimblast;
-        inherit version;
-      };
-      dunstbar = pkgs.callPackage ./dunstbar { inherit version; };
-      power-profilesbar = pkgs.callPackage ./power-profilesbar { inherit version; };
-    };
+        packages = {
+          dim-on-lock = pkgs.callPackage ./dim-on-lock {inherit version;};
+          double-display = pkgs.callPackage ./double-display {inherit version;};
+          nix-npm-install = pkgs.callPackage ./nix-npm-install {inherit version;};
+          power-management = pkgs.callPackage ./power-management {inherit version;};
+          start-vm = pkgs.callPackage ./start-vm {inherit version;};
+          toggle-bluetooth = pkgs.callPackage ./toggle-bluetooth {inherit version;};
+          volume-brightness = pkgs.callPackage ./volume-brightness {inherit version;};
+          wlogout-blur = pkgs.callPackage ./wlogout-blur {
+            grimblast = hyprwm-contrib.packages.${system}.grimblast;
+            inherit version;
+          };
+          screenshot = pkgs.callPackage ./screenshot {
+            grimblast = hyprwm-contrib.packages.${system}.grimblast;
+            inherit version;
+          };
+          dunstbar = pkgs.callPackage ./dunstbar {inherit version;};
+          power-profilesbar = pkgs.callPackage ./power-profilesbar {inherit version;};
+        };
 
-    overlays.default = final: prev: packages;
-  });
+        overlays.default = final: prev: packages;
+      });
 }
-
