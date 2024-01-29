@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="1.7.1"
+VERSION="1.8.0"
 
 # Print colors
 RED="\033[0;31m"
@@ -141,11 +141,6 @@ show_error() {
 get_info() {
   parse_info
   local is_success=$?
-  while [ "$is_success" = "0" ]; do
-    sleep 1
-    parse_info
-    is_success=$?
-  done
   if [ "$is_success" != "0" ]; then
     show_error
   fi
