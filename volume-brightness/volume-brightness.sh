@@ -4,7 +4,7 @@
 # Copyright (c) 2023 Virgil Ribeyre <https://gitlab.com/Zhaith-Izaliel>
 # Licensed under an MIT License
 
-VERSION="1.7.1"
+VERSION="1.8.0"
 
 #######################################
 # Show the usage
