@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="1.9.0"
+VERSION="1.9.1"
 WLOGOUT_BLUR_IMAGE_LOCATION="/tmp/wlogout-blur.png"
 
 usage() {
@@ -24,8 +24,6 @@ WRAPPER COMMANDS
 
 -v,  --version    Show the version and exit.
 
--l, --layer       Use Hyprland the layer shell instead of a blurred screenshot (requires hyprctl) 
-
 ----------
 "
   wlogout --help
@@ -39,17 +37,6 @@ Wrapper version: $VERSION
 Wlogout version: $(wlogout --version)
 "
   exit 0
-}
-
-use_screenshot() {  
-  grimblast save screen $WLOGOUT_BLUR_IMAGE_LOCATION
-  convert -scale 5% -blur 0x2.5 -resize 2000% $WLOGOUT_BLUR_IMAGE_LOCATION $WLOGOUT_BLUR_IMAGE_LOCATION
-  wlogout $*
-}
-
-use_layer_shell() {
-  hyrpctl layers
-  wlogout $*
 }
 
 main() {
@@ -70,16 +57,10 @@ main() {
       version
     ;;
 
-    -l)
-      use_layer_shell ${@:2}
-    ;;
-
-    --layer)
-      use_layer_shell ${@:2}
-    ;;
-
     *)
-      use_screenshot $*
+      grimblast save screen $WLOGOUT_BLUR_IMAGE_LOCATION
+      convert -scale 5% -blur 0x2.5 -resize 2000% $WLOGOUT_BLUR_IMAGE_LOCATION $WLOGOUT_BLUR_IMAGE_LOCATION
+      wlogout $*
     ;;
   esac      
 }

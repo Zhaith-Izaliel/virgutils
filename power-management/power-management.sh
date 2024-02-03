@@ -3,7 +3,7 @@
 # Copyright (c) 2022 Virgil Ribeyre <https://github.com/Zhaith-Izaliel>
 # Licensed under an MIT License
 
-VERSION="1.9.0"
+VERSION="1.9.1"
 
 # Icons
 ICON="system-shutdown"

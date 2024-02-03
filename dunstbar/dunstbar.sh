@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="1.9.0"
+VERSION="1.9.1"
 
 # Print colors
 RED="\033[0;31m"
