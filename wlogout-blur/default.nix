@@ -1,9 +1,7 @@
 {
   pkgs,
-  lib,
   version,
   grimblast,
-  useLayers ? false,
 }:
 pkgs.callPackage ../builder.nix {
   pname = "wlogout-blur";
@@ -16,11 +14,9 @@ pkgs.callPackage ../builder.nix {
     bash
   ];
 
-  paths = with pkgs;
-    [
-      imagemagick
-      wlogout
-      grimblast
-    ]
-    ++ lib.optional useLayers hyprland;
+  paths = with pkgs; [
+    imagemagick
+    wlogout
+    grimblast
+  ];
 }
