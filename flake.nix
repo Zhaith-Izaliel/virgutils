@@ -18,7 +18,7 @@
     ...
   }:
     flake-utils.lib.eachDefaultSystem (system: let
-      version = "1.9.1";
+      version = "1.9.2";
     in
       with import nixpkgs {inherit system;}; rec {
         devShells = {
