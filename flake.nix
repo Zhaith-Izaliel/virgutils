@@ -66,6 +66,7 @@
           volume-brightness = pkgs.callPackage ./volume-brightness {inherit version;};
           wlogout-blur = pkgs.callPackage ./wlogout-blur {
             grimblast = hyprwm-contrib.packages.${system}.grimblast;
+            fastblur = fast-blur-package;
             inherit version;
           };
           screenshot = pkgs.callPackage ./screenshot {
