@@ -3,7 +3,7 @@
 # Copyright (c) 2021 Virgil Ribeyre <https://github.com/Zhaith-Izaliel>
 # Licensed under an MIT License
 
-VERSION="1.9.2"
+VERSION="1.10.0"
 
 # Options
 ## The VM Name in Virsh
