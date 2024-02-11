@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "fast-blur": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1686151794,
+        "narHash": "sha256-iElHvxyVCVL/kDJE2qS13laqmy1884H+JCH3YnKh4H8=",
+        "owner": "bfraboni",
+        "repo": "FastGaussianBlur",
+        "rev": "b267f984a02dc3dbe2ab21420264ac5338608bca",
+        "type": "github"
+      },
+      "original": {
+        "owner": "bfraboni",
+        "repo": "FastGaussianBlur",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -86,6 +102,7 @@
     },
     "root": {
       "inputs": {
+        "fast-blur": "fast-blur",
         "flake-compat": "flake-compat",
         "flake-utils": "flake-utils",
         "hyprwm-contrib": "hyprwm-contrib",

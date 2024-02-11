@@ -9,18 +9,24 @@
     };
     hyprwm-contrib.url = "github:hyprwm/contrib";
     flake-utils.url = "github:numtide/flake-utils";
+    fast-blur = {
+      url = "github:bfraboni/FastGaussianBlur";
+      flake = false;
+    };
   };
 
   outputs = {
     nixpkgs,
     flake-utils,
     hyprwm-contrib,
+    fast-blur,
     ...
   }:
-    flake-utils.lib.eachDefaultSystem (system: let
-      version = "1.9.2";
-    in
-      with import nixpkgs {inherit system;}; rec {
+    flake-utils.lib.eachDefaultSystem (system:
+      with import nixpkgs {inherit system;}; let
+        version = "1.9.2";
+        fast-blur-package = pkgs.callPackage ./dependencies/fastblur.nix {input = fast-blur;};
+      in rec {
         devShells = {
           workspaceShell = pkgs.mkShell {
             nativeBuildInputs = with pkgs; [
@@ -44,6 +50,7 @@
               wlr-randr
               power-profiles-daemon
               node2nix
+              fast-blur-package
             ];
           };
           default = devShells.workspaceShell;
