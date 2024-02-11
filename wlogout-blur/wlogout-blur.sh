@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="1.9.2"
+VERSION="1.10.0"
 WLOGOUT_BLUR_IMAGE_LOCATION="/tmp/wlogout-blur.png"
 
 usage() {
@@ -59,7 +59,7 @@ main() {
 
     *)
       grimblast save screen $WLOGOUT_BLUR_IMAGE_LOCATION
-      convert -scale 5% -blur 0x2.5 -resize 2000% $WLOGOUT_BLUR_IMAGE_LOCATION $WLOGOUT_BLUR_IMAGE_LOCATION
+      fastblur $WLOGOUT_BLUR_IMAGE_LOCATION $WLOGOUT_BLUR_IMAGE_LOCATION 25
       wlogout $*
     ;;
   esac      
