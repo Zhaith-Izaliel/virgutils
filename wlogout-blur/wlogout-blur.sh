@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="1.11.0"
+VERSION="1.12.0"
 WLOGOUT_BLUR_IMAGE_LOCATION="/tmp/wlogout-blur.png"
 
 usage() {
