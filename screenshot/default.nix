@@ -1,5 +1,7 @@
-{ pkgs, version, grimblast }:
-
+{
+  pkgs,
+  version,
+}:
 pkgs.callPackage ../builder.nix {
   pname = "screenshot";
 
@@ -11,8 +13,7 @@ pkgs.callPackage ../builder.nix {
     bash
   ];
 
-  paths = [
+  paths = with pkgs; [
     grimblast
   ];
 }
-

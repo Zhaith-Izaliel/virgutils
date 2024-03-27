@@ -1,7 +1,6 @@
 {
   pkgs,
   version,
-  grimblast,
   fastblur,
 }:
 pkgs.callPackage ../builder.nix {
