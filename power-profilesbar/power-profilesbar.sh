@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="1.12.0"
+VERSION="1.13.0"
 OUTPUT='{
   "text": "",
   "alt": "",

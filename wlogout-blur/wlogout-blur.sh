@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="1.12.0"
+VERSION="1.13.0"
 WLOGOUT_BLUR_IMAGE_LOCATION="/tmp/wlogout-blur.png"
 
 usage() {
@@ -60,10 +60,10 @@ main() {
     *)
       grimblast save screen $WLOGOUT_BLUR_IMAGE_LOCATION
       fastblur $WLOGOUT_BLUR_IMAGE_LOCATION $WLOGOUT_BLUR_IMAGE_LOCATION 25
-      wlogout $*
+      wlogout "$@"
     ;;
   esac      
 }
 
-main $*
+main "$@"
 

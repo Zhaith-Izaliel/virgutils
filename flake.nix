@@ -7,7 +7,6 @@
       url = "github:edolstra/flake-compat";
       flake = false;
     };
-    hyprwm-contrib.url = "github:hyprwm/contrib";
     flake-utils.url = "github:numtide/flake-utils";
     fast-blur = {
       url = "github:bfraboni/FastGaussianBlur";
@@ -18,13 +17,12 @@
   outputs = {
     nixpkgs,
     flake-utils,
-    hyprwm-contrib,
     fast-blur,
     ...
   }:
     flake-utils.lib.eachDefaultSystem (system:
       with import nixpkgs {inherit system;}; let
-        version = "1.12.0";
+        version = "1.13.0";
         fast-blur-package = pkgs.callPackage ./dependencies/fastblur.nix {input = fast-blur;};
       in rec {
         devShells = {
@@ -42,7 +40,7 @@
               gnused
               wlogout
               imagemagick
-              hyprwm-contrib.packages.${system}.grimblast
+              grimblast
               bluez
               gnugrep
               gnused
@@ -58,19 +56,16 @@
 
         packages = {
           dim-on-lock = pkgs.callPackage ./dim-on-lock {inherit version;};
-          double-display = pkgs.callPackage ./double-display {inherit version;};
           nix-npm-install = pkgs.callPackage ./nix-npm-install {inherit version;};
           power-management = pkgs.callPackage ./power-management {inherit version;};
           start-vm = pkgs.callPackage ./start-vm {inherit version;};
           toggle-bluetooth = pkgs.callPackage ./toggle-bluetooth {inherit version;};
           volume-brightness = pkgs.callPackage ./volume-brightness {inherit version;};
           wlogout-blur = pkgs.callPackage ./wlogout-blur {
-            grimblast = hyprwm-contrib.packages.${system}.grimblast;
             fastblur = fast-blur-package;
             inherit version;
           };
           screenshot = pkgs.callPackage ./screenshot {
-            grimblast = hyprwm-contrib.packages.${system}.grimblast;
             inherit version;
           };
           dunstbar = pkgs.callPackage ./dunstbar {inherit version;};
