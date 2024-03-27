@@ -3,7 +3,7 @@
 # Copyright (c) 2021 Virgil Ribeyre <https://github.com/Zhaith-Izaliel>
 # Licensed under an MIT License
 
-VERSION="1.13.0"
+VERSION="1.13.1"
 
 # Options
 ## The VM Name in Virsh
@@ -168,7 +168,7 @@ looking-glass() {
 #   None
 #######################################
 virsh-wrapper() {
-  ISOLATE_CPUS=$ISOLATE_CPUS virsh -c qemu:///system "$*"
+  ISOLATE_CPUS=$ISOLATE_CPUS virsh -c qemu:///system "$@"
 }
 
 #######################################
@@ -392,7 +392,7 @@ clean-up-exit() {
 #   None
 #######################################
 main() {
-  parse-options "$*"
+  parse-options "$@"
   verbose "Starting the VM..."
   run-vm
   notify-send -t 2000 -i "$SHOWN_ICON" "$SUMMARY" "$(echo -e "<b>$VM_NAME</b> has started.\n<b>Looking Glass</b> will start shortly.")"
@@ -401,5 +401,5 @@ main() {
 
 # Trap the exit of the program to ensure clean up of the lignering processes.
 trap clean-up-exit EXIT
-main "$*"
+main "$@"
 
