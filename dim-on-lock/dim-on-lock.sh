@@ -3,8 +3,8 @@
 # Copyright (c) 2022 Virgil Ribeyre <https://github.com/Zhaith-Izaliel>
 # Licensed under an MIT License
 
-VERSION="1.13.1"
-DIM_VALUE=""
+VERSION="1.14.0"
+
 
 #######################################
 # Show the usage
@@ -16,7 +16,7 @@ DIM_VALUE=""
 #   Exits with code 0
 #######################################
 usage() {
-  echo "
+  echo -e "
 Usage: dim-on-lock [OPTIONS...] [dim/undim]
 Dim On Lock, a wrapper around brightnessctl to dim before lock
 
@@ -26,48 +26,81 @@ Author: Ribeyre Virgil.
 Licensed: MIT.
 ----------
 OPTIONS:
-  -h, --help    Show this message
-  -v, -version  Print version information
+  -h, --help            \tShow this message
+  -v, --version         \tPrint version information
+
+SETTINGS:
+      --no-min          \tAllow dimming outside of the default minimal value, thus setting the brightness of the screen to 0 is possible.
 
 COMMANDS:
-  dim  [VALUE]  Dim screen by [VALUE]
-  undim         Set brightness to previous state before dimming
+      --dim\t[VALUE] \tDim screen by [VALUE]
+      --undim           \tSet brightness to previous state before dimming
 "
   exit 0
 }
 
 version() {
   echo "$VERSION"
+  exit 0
 }
 
 main() {
-  case "$1" in
-    "-h")
+  local optspec=":hv-:"
+  while getopts "$optspec" optchar; do
+  case "${optchar}" in
+    "h")
       usage
       ;;
 
-    "--help")
-      usage
-      ;;
-
-    "-v")
+    "v")
       version
       ;;
 
-    "--version")
-      version
+    "-")
+      case "${OPTARG}" in
+        "help")
+          usage
+          ;;
+
+        "no-min")
+          IS_MIN="false"
+          ;;
+
+
+        "version")
+          version
+          ;;
+
+        "dim")
+          brightnessctl --save
+          local val="${!OPTIND}"; OPTIND=$(( OPTIND + 1 ))
+      
+          if [ "$IS_MIN" = "true" ]; then
+            brightnessctl --min-value="5000" set "${val}%-"
+          else
+            brightnessctl set "${val}%-"
+          fi
+        ;;
+
+        "undim")
+          brightnessctl --restore
+        ;;
+        
+        "*")
+          if [ "$OPTERR" = 1 ] && [ "${optspec:0:1}" != ":" ]; then
+            echo "Unknown option --${OPTARG}" >&2
+          fi
+        ;;
+      esac
       ;;
-
-    "dim")
-      brightnessctl --save
-      brightnessctl --min-value="5000" set "${2}%-"
+    "*")
+      if [ "$OPTERR" != 1 ] || [ "${optspec:0:1}" = ":" ]; then
+        echo "Non-option argument: '-${OPTARG}'" >&2
+      fi
     ;;
-
-    "undim")
-      brightnessctl --restore
-    ;;
-  esac
+    esac
+  done
 }
 
-main $*
+main "$@"
 
