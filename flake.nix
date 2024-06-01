@@ -22,7 +22,7 @@
   }:
     flake-utils.lib.eachDefaultSystem (system:
       with import nixpkgs {inherit system;}; let
-        version = "1.14.1";
+        version = "1.15.0";
         fast-blur-package = pkgs.callPackage ./dependencies/fastblur.nix {input = fast-blur;};
       in rec {
         devShells = {
