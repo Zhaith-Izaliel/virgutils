@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-VERSION="1.15.0"
+VERSION="1.16.0"
 WLOGOUT_BLUR_IMAGE_LOCATION="/tmp/wlogout-blur.png"
+WLOGOUT_PID_FILE="/tmp/wlogout-blur.pid"
 
 usage() {
   echo "
@@ -24,6 +25,8 @@ WRAPPER COMMANDS
 
 -v,  --version    Show the version and exit.
 
+     --no-bg      Do not use the blue background image. This option is used when you need wlogout with duplicate prevention while not needing the blurred background image trick. 
+
 ----------
 "
   wlogout --help
@@ -39,31 +42,48 @@ Wlogout version: $(wlogout --version)
   exit 0
 }
 
+run() {
+  wlogout "$@" &
+  local pid=$!
+
+  echo "$pid" >"$WLOGOUT_PID_FILE"
+  wait $pid
+
+  rm "$WLOGOUT_PID_FILE"
+}
+
 main() {
+  if [ -f "$WLOGOUT_PID_FILE" ]; then
+    exit 0
+  fi
+
   case "$1" in
-    -h)
-      usage
+  -h)
+    usage
     ;;
 
-    --help)
-      usage
+  --help)
+    usage
     ;;
 
-    -v)
-      version
+  -v)
+    version
     ;;
 
-    --version)
-      version
+  --version)
+    version
     ;;
 
-    *)
-      grimblast save screen $WLOGOUT_BLUR_IMAGE_LOCATION
-      fastblur $WLOGOUT_BLUR_IMAGE_LOCATION $WLOGOUT_BLUR_IMAGE_LOCATION 25
-      wlogout "$@"
+  --no-bg)
+    run "${@:2}"
     ;;
-  esac      
+
+  *)
+    grimblast save screen $WLOGOUT_BLUR_IMAGE_LOCATION
+    fastblur $WLOGOUT_BLUR_IMAGE_LOCATION $WLOGOUT_BLUR_IMAGE_LOCATION 25
+    run "$@"
+    ;;
+  esac
 }
 
 main "$@"
-
