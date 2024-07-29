@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-VERSION="1.17.0"
+VERSION="1.17.1"
 WLOGOUT_BLUR_IMAGE_LOCATION="/tmp/wlogout-blur.png"
 WLOGOUT_PID_FILE="/tmp/wlogout-blur.pid"
 
 usage() {
   echo "
-Usage: wlogout-blur [...]
+Usage: wlogout-blur [wlogout-blur ARG] [wlogout ARGS]
 Wlogout Blur, a wrapper around wlogout to create a blurred background
 
 Version $VERSION
@@ -48,14 +48,13 @@ run() {
 
   echo "$pid" >"$WLOGOUT_PID_FILE"
   wait $pid
-
-  rm "$WLOGOUT_PID_FILE"
 }
 
 main() {
   if [ -f "$WLOGOUT_PID_FILE" ]; then
     exit 0
   fi
+  trap 'rm -f $WLOGOUT_PID_FILE' EXIT
 
   case "$1" in
   -h)
