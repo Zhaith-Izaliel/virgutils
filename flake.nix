@@ -2,56 +2,73 @@
   description = "Virgutils, multiple utils used in Zhaith Izaliel's system";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    flake-compat = {
-      url = "github:edolstra/flake-compat";
-      flake = false;
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    hyprland-contrib = {
+      url = "github:hyprwm/contrib";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
-    flake-utils.url = "github:numtide/flake-utils";
     fast-blur = {
       url = "github:bfraboni/FastGaussianBlur";
       flake = false;
     };
   };
 
-  outputs = {
-    nixpkgs,
-    flake-utils,
+  outputs = inputs @ {
+    flake-parts,
     fast-blur,
+    hyprland-contrib,
     ...
-  }:
-    flake-utils.lib.eachDefaultSystem (system:
-      with import nixpkgs {inherit system;}; let
-        version = "1.17.1";
-        fast-blur-package = pkgs.callPackage ./dependencies/fastblur.nix {input = fast-blur;};
-      in rec {
+  }: let
+    version = "1.17.2";
+  in
+    flake-parts.lib.mkFlake {inherit inputs;} ({...}: {
+      imports = [
+        flake-parts.flakeModules.easyOverlay
+      ];
+
+      systems = ["x86_64-linux" "aarch64-darwin" "x86_64-darwin"];
+
+      perSystem = {
+        config,
+        pkgs,
+        system,
+        ...
+      }: let
+        fastblur = pkgs.callPackage ./dependencies/fastblur.nix {input = fast-blur;};
+        grimblast = hyprland-contrib.packages.${system}.grimblast;
+      in {
+        overlayAttrs = config.packages;
+
         devShells = {
-          workspaceShell = pkgs.mkShell {
-            nativeBuildInputs = with pkgs; [
-              bashInteractive
-              brightnessctl
-              dunst
-              libnotify
-              looking-glass-client
-              virt-manager
-              wireplumber
-              gawk
-              bc
-              gnused
-              wlogout
-              imagemagick
-              grimblast
-              bluez
-              gnugrep
-              gnused
-              coreutils
-              wlr-randr
-              power-profiles-daemon
-              node2nix
-              fast-blur-package
-            ];
+          # nix develop
+          default = pkgs.mkShell {
+            nativeBuildInputs =
+              (with pkgs; [
+                bashInteractive
+                brightnessctl
+                dunst
+                libnotify
+                looking-glass-client
+                virt-manager
+                wireplumber
+                gawk
+                bc
+                gnused
+                wlogout
+                imagemagick
+                bluez
+                gnugrep
+                gnused
+                coreutils
+                wlr-randr
+                power-profiles-daemon
+                node2nix
+              ])
+              ++ [
+                grimblast
+                fastblur
+              ];
           };
-          default = devShells.workspaceShell;
         };
 
         packages = {
@@ -62,16 +79,14 @@
           toggle-bluetooth = pkgs.callPackage ./toggle-bluetooth {inherit version;};
           volume-brightness = pkgs.callPackage ./volume-brightness {inherit version;};
           wlogout-blur = pkgs.callPackage ./wlogout-blur {
-            fastblur = fast-blur-package;
-            inherit version;
+            inherit version fastblur;
           };
           screenshot = pkgs.callPackage ./screenshot {
-            inherit version;
+            inherit version grimblast;
           };
           dunstbar = pkgs.callPackage ./dunstbar {inherit version;};
           power-profilesbar = pkgs.callPackage ./power-profilesbar {inherit version;};
         };
-
-        overlays.default = final: prev: packages;
-      });
+      };
+    });
 }

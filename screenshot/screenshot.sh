@@ -1,20 +1,38 @@
 #!/usr/bin/env bash
 
 SCREENSHOTS_FOLDER="$HOME/Pictures/Screenshots"
-GRIMBLAST_PID_FILE="/tmp/grimblast.pid"
 
-if [ -f "$GRIMBLAST_PID_FILE" ]; then
-  exit 0
-fi
+# Notify-send
+ERROR_ICON="system-error"
+SUMMARY="wlogout-blur"
 
-trap 'rm -f $GRIMBLAST_PID_FILE' EXIT
+# Print colors:
+RED="\033[0;31m"
+BLUE="\033[0;34m"
+NC="\033[0m" # No Color
 
-if [ ! -d "$SCREENSHOTS_FOLDER" ]; then
-  mkdir -p "$SCREENSHOTS_FOLDER"
-fi
+pretty-print() {
+  echo -e "${BLUE}[$(date +'%Y-%m-%d|%H:%M:%S%z')]:${NC} $*"
+}
 
-grimblast --freeze --notify copysave "$1" "${SCREENSHOTS_FOLDER}/$(date +%F:%H:%M:%S).png" &
-pid=$!
+err() {
+  pretty-print "${RED}$*${NC}" >&2
+  notify-send -u critical -t 5000 -i "$ERROR_ICON" "$SUMMARY" "$*"
+}
 
-echo "$pid" >"$GRIMBLAST_PID_FILE"
-wait $pid
+run() {
+  if [ ! -d "$SCREENSHOTS_FOLDER" ]; then
+    mkdir -p "$SCREENSHOTS_FOLDER"
+  fi
+
+  local pid
+  pid="$(pidof grim)"
+
+  if [ "$pid" != "" ]; then
+    err "There is already a Grimblast process running with PID $pid"
+    exit 1
+  fi
+  grimblast --freeze --notify copysave "$1" "${SCREENSHOTS_FOLDER}/$(date +%F:%H:%M:%S).png"
+}
+
+run "$@"
