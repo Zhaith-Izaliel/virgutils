@@ -19,7 +19,7 @@
     hyprland-contrib,
     ...
   }: let
-    version = "1.17.2";
+    version = "1.17.3";
   in
     flake-parts.lib.mkFlake {inherit inputs;} ({...}: {
       imports = [
@@ -79,7 +79,7 @@
           toggle-bluetooth = pkgs.callPackage ./toggle-bluetooth {inherit version;};
           volume-brightness = pkgs.callPackage ./volume-brightness {inherit version;};
           wlogout-blur = pkgs.callPackage ./wlogout-blur {
-            inherit version fastblur;
+            inherit version fastblur grimblast;
           };
           screenshot = pkgs.callPackage ./screenshot {
             inherit version grimblast;

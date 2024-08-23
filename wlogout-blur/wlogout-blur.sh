@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="1.17.2"
+VERSION="1.17.3"
 WLOGOUT_BLUR_IMAGE_LOCATION="/tmp/wlogout-blur.png"
 USE_BG="true"
 
@@ -19,7 +19,6 @@ pretty-print() {
 
 err() {
   pretty-print "${RED}$*${NC}" >&2
-  notify-send -u critical -t 5000 -i "$ERROR_ICON" "$SUMMARY" "$*"
 }
 
 usage() {
