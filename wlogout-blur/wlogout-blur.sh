@@ -1,8 +1,26 @@
 #!/usr/bin/env bash
 
-VERSION="1.17.1"
+VERSION="1.17.2"
 WLOGOUT_BLUR_IMAGE_LOCATION="/tmp/wlogout-blur.png"
-WLOGOUT_PID_FILE="/tmp/wlogout-blur.pid"
+USE_BG="true"
+
+# Notify-send
+ERROR_ICON="system-error"
+SUMMARY="wlogout-blur"
+
+# Print colors:
+RED="\033[0;31m"
+BLUE="\033[0;34m"
+NC="\033[0m" # No Color
+
+pretty-print() {
+  echo -e "${BLUE}[$(date +'%Y-%m-%d|%H:%M:%S%z')]:${NC} $*"
+}
+
+err() {
+  pretty-print "${RED}$*${NC}" >&2
+  notify-send -u critical -t 5000 -i "$ERROR_ICON" "$SUMMARY" "$*"
+}
 
 usage() {
   echo "
@@ -43,18 +61,23 @@ Wlogout version: $(wlogout --version)
 }
 
 run() {
-  wlogout "$@" &
-  local pid=$!
+  local pid
+  pid="$(pidof wlogout)"
 
-  echo "$pid" >"$WLOGOUT_PID_FILE"
-  wait $pid
+  if [ "$pid" != "" ]; then
+    err "There is already a Wlogout process running with PID $pid"
+    exit 1
+  fi
+
+  if [ "$USE_BG" = "true" ]; then
+    grimblast save screen $WLOGOUT_BLUR_IMAGE_LOCATION
+    fastblur $WLOGOUT_BLUR_IMAGE_LOCATION $WLOGOUT_BLUR_IMAGE_LOCATION 25
+  fi
+
+  wlogout "$@"
 }
 
 main() {
-  if [ -f "$WLOGOUT_PID_FILE" ]; then
-    exit 0
-  fi
-  trap 'rm -f $WLOGOUT_PID_FILE' EXIT
 
   case "$1" in
   -h)
@@ -74,12 +97,11 @@ main() {
     ;;
 
   --no-bg)
+    USE_BG="false"
     run "${@:2}"
     ;;
 
   *)
-    grimblast save screen $WLOGOUT_BLUR_IMAGE_LOCATION
-    fastblur $WLOGOUT_BLUR_IMAGE_LOCATION $WLOGOUT_BLUR_IMAGE_LOCATION 25
     run "$@"
     ;;
   esac

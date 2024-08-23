@@ -14,10 +14,14 @@ pkgs.callPackage ../builder.nix {
     bash
   ];
 
-  paths = with pkgs; [
-    imagemagick
-    wlogout
-    grimblast
-    fastblur
-  ];
+  paths =
+    (with pkgs; [
+      imagemagick
+      wlogout
+      grimblast
+      libnotify
+    ])
+    ++ [
+      fastblur
+    ];
 }
