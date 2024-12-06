@@ -19,7 +19,7 @@
     hyprland-contrib,
     ...
   }: let
-    version = "1.17.3";
+    version = "1.18.0";
   in
     flake-parts.lib.mkFlake {inherit inputs;} ({...}: {
       imports = [
@@ -63,6 +63,7 @@
                 wlr-randr
                 power-profiles-daemon
                 node2nix
+                hyprsunset
               ])
               ++ [
                 grimblast
@@ -73,6 +74,7 @@
 
         packages = {
           dim-on-lock = pkgs.callPackage ./dim-on-lock {inherit version;};
+          hyprland-nightlights = pkgs.callPackage ./hyprland-nightlights {inherit version;};
           nix-npm-install = pkgs.callPackage ./nix-npm-install {inherit version;};
           power-management = pkgs.callPackage ./power-management {inherit version;};
           start-vm = pkgs.callPackage ./start-vm {inherit version;};
