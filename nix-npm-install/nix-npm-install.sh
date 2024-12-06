@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 TEMPDIR="/tmp/nix-npm-install/"
-VERSION="1.17.3"
+VERSION="1.18.0"
 PACKAGE_NAME=""
 PACKAGE_VERSION=""
 
