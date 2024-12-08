@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="1.18.0"
+VERSION="1.18.1"
 
 # Print colors:
 RED="\033[0;31m"
@@ -49,15 +49,8 @@ run() {
   local pid
   pid="$(pidof hyprsunset)"
 
-  if [ "$pid" != "" ] && [ "$1" != "--stop" ]; then
-    err "There is already an Hyprsunset process running with PID $pid"
-    exit 1
-  fi
-
-  if [ "$1" == "--stop" ]; then
-    if [ "$pid" != "" ]; then
-      kill "$pid"
-    fi
+  if [ "$pid" != "" ]; then
+    kill "$pid"
     exit $?
   fi
 
@@ -81,10 +74,6 @@ main() {
 
   --version)
     version
-    ;;
-
-  --stop)
-    run "$@"
     ;;
 
   *)
