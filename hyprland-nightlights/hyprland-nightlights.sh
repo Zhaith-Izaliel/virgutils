@@ -17,7 +17,7 @@ err() {
 
 usage() {
   echo "
-Usage: nightlights --start|--stop [Hyprsunset ARGS]
+Usage: nightlights [Hyprsunset ARGS]
 Nightlights, a wrapper around Hyprsunset to run or kill Nightlights
 
 Version $VERSION
@@ -31,7 +31,6 @@ WRAPPER COMMANDS
 
 -v,  --version    Show the version and exit.
 
-     --stop       Kill hyprsunset
 ----------
 "
   hyprsunset --help
