@@ -19,7 +19,7 @@
     hyprland-contrib,
     ...
   }: let
-    version = "1.18.1";
+    version = "1.19.0";
   in
     flake-parts.lib.mkFlake {inherit inputs;} ({...}: {
       imports = [
