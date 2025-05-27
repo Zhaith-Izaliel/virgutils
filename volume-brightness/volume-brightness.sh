@@ -4,7 +4,7 @@
 # Copyright (c) 2023 Virgil Ribeyre <https://gitlab.com/Zhaith-Izaliel>
 # Licensed under an MIT License
 
-VERSION="1.18.1"
+VERSION="1.19.0"
 
 #######################################
 # Show the usage
@@ -34,7 +34,6 @@ COMMANDS:
   exit 0
 }
 
-
 #######################################
 # Show the version
 # Arguments:
@@ -47,7 +46,6 @@ version() {
   exit 0
 }
 
-
 #######################################
 # Set the brightness of the screen and show a progress bar notification
 # Arguments:
@@ -55,9 +53,10 @@ version() {
 #######################################
 set_brightness() {
   brightnessctl set "$1"
-  local max="$(brightnessctl max)"
-  local current="$(brightnessctl get)"
-  local percent="$((100*$current/$max))"
+  local max current percent
+  max="$(brightnessctl max)"
+  current="$(brightnessctl get)"
+  percent="$((100 * current / max))"
 
   dunstify -h "int:value:${percent}" "Brightness"
 }
@@ -70,23 +69,24 @@ set_brightness() {
 #   value - ([VOL]%[+/-]) the percentage to change the volume with
 #######################################
 set_volume() {
-  wpctl set-volume -l $1 $2 $3
-  local max="$(echo "scale=1; $1*100" | bc | sed 's/\..*$//')"
-  local current_float="$(wpctl get-volume $2 | awk -F ' ' '{print $2}')"
-  local current="$(echo "scale=1; $current_float*100" | bc | sed 's/\..*$//')"
-  local percent="$((100*$current/$max))"
+  wpctl set-volume -l "$1" "$2" "$3"
+  local max current_float current percent
 
-  if (($current == 100)); then
+  max="$(echo "scale=1; $1*100" | bc | sed 's/\..*$//')"
+  current_float="$(wpctl get-volume "$2" | awk -F ' ' '{print $2}')"
+  current="$(echo "scale=1; $current_float*100" | bc | sed 's/\..*$//')"
+  percent="$((100 * current / max))"
+
+  if ((current == 100)); then
     dunstify -u low -h "int:value:${percent}" "Volume"
     return $?
-  elif (($current > 100)); then
+  elif ((current > 100)); then
     dunstify -u critical -h "int:value:${percent}" "Volume"
     return $?
   fi
 
   dunstify -h "int:value:${percent}" "Volume"
 }
-
 
 #######################################
 # Main entry point of the script
@@ -95,36 +95,35 @@ set_volume() {
 #######################################
 main() {
   case "$1" in
-    "-h")
-      usage
-      ;;
+  -h)
+    usage
+    ;;
 
-    "--help")
-      usage
-      ;;
+  --help)
+    usage
+    ;;
 
-    "--version")
-      version
-      ;;
+  --version)
+    version
+    ;;
 
-    "-v")
-      set_volume $2 $3 $4
-      ;;
+  -v)
+    set_volume "$2" "$3" "$4"
+    ;;
 
-    "--volume")
-      set_volume $2 $3 $4
-      ;;
+  --volume)
+    set_volume "$2" "$3" "$4"
+    ;;
 
-    "-b")
-      set_brightness $2
-      ;;
+  -b)
+    set_brightness "$2"
+    ;;
 
-    "--brightness")
-      set_brightness $2
-      ;;
+  --brightness)
+    set_brightness "$2"
+    ;;
 
   esac
 }
 
-main $*
-
+main "$@"

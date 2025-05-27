@@ -2,7 +2,7 @@
   description = "Virgutils, multiple utils used in Zhaith Izaliel's system";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,7 +19,7 @@
     hyprland-contrib,
     ...
   }: let
-    version = "1.18.1";
+    version = "1.19.0";
   in
     flake-parts.lib.mkFlake {inherit inputs;} ({...}: {
       imports = [

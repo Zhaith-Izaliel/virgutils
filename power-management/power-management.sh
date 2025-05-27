@@ -3,7 +3,7 @@
 # Copyright (c) 2022 Virgil Ribeyre <https://github.com/Zhaith-Izaliel>
 # Licensed under an MIT License
 
-VERSION="1.18.1"
+VERSION="1.19.0"
 
 # Icons
 ICON="system-shutdown"
@@ -68,12 +68,12 @@ main() {
     usage
   fi
 
-  shutdown "$@" &> $OUTPUT_FILE
+  shutdown "$@" &>$OUTPUT_FILE
   local exit_code=$?
 
   if [ "$exit_code" = "0" ]; then
-    if [ "$@" = "-c" ]; then
-      echo "Shutdown cancelled." > $OUTPUT_FILE
+    if [ "$*" = "-c" ]; then
+      echo "Shutdown cancelled." >$OUTPUT_FILE
     fi
 
     cat $OUTPUT_FILE
@@ -84,5 +84,4 @@ main() {
 }
 
 # Trap the exit of the program to ensure clean up of the lignering processes.
-main $*
-
+main "$@"

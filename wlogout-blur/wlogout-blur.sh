@@ -1,12 +1,8 @@
 #!/usr/bin/env bash
 
-VERSION="1.18.1"
+VERSION="1.19.0"
 WLOGOUT_BLUR_IMAGE_LOCATION="/tmp/wlogout-blur.png"
 USE_BG="true"
-
-# Notify-send
-ERROR_ICON="system-error"
-SUMMARY="wlogout-blur"
 
 # Print colors:
 RED="\033[0;31m"

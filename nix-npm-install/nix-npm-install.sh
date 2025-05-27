@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 TEMPDIR="/tmp/nix-npm-install/"
-VERSION="1.18.1"
+VERSION="1.19.0"
 PACKAGE_NAME=""
 PACKAGE_VERSION=""
 
 usage() {
   echo "
 Usage: nix-npm-install [PACKAGE] ([VERSION])
-Install a npm package globaly as a Nix package.
+Install a npm package globally as a Nix package.
 
 Version $VERSION
 
@@ -28,7 +28,7 @@ version() {
 }
 
 #######################################
-# Print a formatted message with a date string at its begining
+# Print a formatted message with a date string at its beginning
 # Globals:
 #   None
 # Arguments:
@@ -41,7 +41,7 @@ pretty-print() {
 }
 
 #######################################
-# Repport errors to stderr and print them
+# Report errors to stderr and print them
 # Globals:
 #   None
 # Arguments:
@@ -110,4 +110,3 @@ main() {
 }
 
 main "$@"
-

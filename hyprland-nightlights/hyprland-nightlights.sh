@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="1.18.1"
+VERSION="1.19.0"
 
 # Print colors:
 RED="\033[0;31m"
@@ -17,7 +17,7 @@ err() {
 
 usage() {
   echo "
-Usage: nightlights --start|--stop [Hyprsunset ARGS]
+Usage: nightlights [Hyprsunset ARGS]
 Nightlights, a wrapper around Hyprsunset to run or kill Nightlights
 
 Version $VERSION
@@ -31,7 +31,6 @@ WRAPPER COMMANDS
 
 -v,  --version    Show the version and exit.
 
-     --stop       Kill hyprsunset
 ----------
 "
   hyprsunset --help
