@@ -22,8 +22,8 @@ Volume-Brightness, update volume or brightness while showing a nice notification
 
 Version $VERSION
 
-Author: Ribeyre Virgil.
-Licensed: MIT.
+Author: Zhaith Izaliel
+Licensed: MIT
 ----------
 COMMANDS:
   -h, --help                                Show this message

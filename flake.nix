@@ -3,10 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
-    hyprland-contrib = {
-      url = "github:hyprwm/contrib";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     fast-blur = {
       url = "github:bfraboni/FastGaussianBlur";
       flake = false;
@@ -16,7 +12,6 @@
   outputs = inputs @ {
     flake-parts,
     fast-blur,
-    hyprland-contrib,
     ...
   }: let
     version = "1.19.0";
@@ -31,11 +26,9 @@
       perSystem = {
         config,
         pkgs,
-        system,
         ...
       }: let
         fastblur = pkgs.callPackage ./dependencies/fastblur.nix {input = fast-blur;};
-        grimblast = hyprland-contrib.packages.${system}.grimblast;
       in {
         overlayAttrs = config.packages;
 
@@ -44,29 +37,23 @@
           default = pkgs.mkShell {
             nativeBuildInputs =
               (with pkgs; [
-                bashInteractive
                 brightnessctl
                 dunst
                 libnotify
-                looking-glass-client
-                virt-manager
                 wireplumber
                 gawk
                 bc
                 gnused
                 wlogout
-                imagemagick
                 bluez
                 gnugrep
-                gnused
                 coreutils
-                wlr-randr
                 power-profiles-daemon
                 node2nix
-                hyprsunset
+                niri
+                wl-clipboard
               ])
               ++ [
-                grimblast
                 fastblur
               ];
           };
@@ -81,10 +68,7 @@
           toggle-bluetooth = pkgs.callPackage ./toggle-bluetooth {inherit version;};
           volume-brightness = pkgs.callPackage ./volume-brightness {inherit version;};
           wlogout-blur = pkgs.callPackage ./wlogout-blur {
-            inherit version fastblur grimblast;
-          };
-          screenshot = pkgs.callPackage ./screenshot {
-            inherit version grimblast;
+            inherit version fastblur;
           };
           dunstbar = pkgs.callPackage ./dunstbar {inherit version;};
           power-profilesbar = pkgs.callPackage ./power-profilesbar {inherit version;};

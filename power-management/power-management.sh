@@ -28,8 +28,8 @@ Power Management, a wrapper around shutdown with libnotify
 
 Version $VERSION
 
-Author: Ribeyre Virgil.
-Licensed: MIT.
+Author: Zhaith Izaliel
+Licensed: MIT
 ----------
 "
   shutdown --help

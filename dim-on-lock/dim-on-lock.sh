@@ -23,8 +23,8 @@ Dim On Lock, a wrapper around brightnessctl to dim before lock
 
 Version $VERSION
 
-Author: Ribeyre Virgil.
-Licensed: MIT.
+Author: Zhaith Izaliel
+Licensed: MIT
 ----------
 OPTIONS:
   -h, --help            \tShow this message

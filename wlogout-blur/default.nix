@@ -2,7 +2,6 @@
   pkgs,
   version,
   fastblur,
-  grimblast,
 }:
 pkgs.callPackage ../builder.nix {
   pname = "wlogout-blur";
@@ -17,11 +16,11 @@ pkgs.callPackage ../builder.nix {
 
   paths =
     (with pkgs; [
-      imagemagick
       wlogout
+      niri
+      wl-clipboard
     ])
     ++ [
-      grimblast
       fastblur
     ];
 }

@@ -11,8 +11,8 @@ Install a npm package globally as a Nix package.
 
 Version $VERSION
 
-Author: Ribeyre Virgil.
-Licensed: MIT.
+Author: Zhaith Izaliel
+Licensed: MIT
 
 ARGUMENTS
   -h, --help                      Show this message.

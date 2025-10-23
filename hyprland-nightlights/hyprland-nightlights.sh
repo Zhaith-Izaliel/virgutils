@@ -22,8 +22,8 @@ Nightlights, a wrapper around Hyprsunset to run or kill Nightlights
 
 Version $VERSION
 
-Author: Ribeyre Virgil.
-Licensed: MIT.
+Author: Zhaith Izaliel
+Licensed: MIT
 ----------
 WRAPPER COMMANDS
 

@@ -24,8 +24,8 @@ Wlogout Blur, a wrapper around wlogout to create a blurred background
 
 Version $VERSION
 
-Author: Ribeyre Virgil.
-Licensed: MIT.
+Author: Zhaith Izaliel
+Licensed: MIT
 ----------
 SETTINGS
 
@@ -65,7 +65,8 @@ run() {
   fi
 
   if [ "$USE_BG" = "true" ]; then
-    grimblast save screen $WLOGOUT_BLUR_IMAGE_LOCATION
+    niri msg action screenshot-screen -p false
+    wl-paste -n >"$WLOGOUT_BLUR_IMAGE_LOCATION"
     fastblur $WLOGOUT_BLUR_IMAGE_LOCATION $WLOGOUT_BLUR_IMAGE_LOCATION 25
   fi
 

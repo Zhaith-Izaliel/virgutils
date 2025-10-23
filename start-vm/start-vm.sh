@@ -55,8 +55,8 @@ Start a Windows VM with GPU Passthrough with Virt-Manager. It also runs Looking 
 
 Version $VERSION
 
-Author: Ribeyre Virgil.
-Licensed: MIT.
+Author: Zhaith Izaliel
+Licensed: MIT
 
 ARGUMENTS
   -h, --help                      Show this message.
