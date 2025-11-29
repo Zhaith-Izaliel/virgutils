@@ -2,7 +2,7 @@
   description = "Virgutils, multiple utils used in Zhaith Izaliel's system";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     fast-blur = {
       url = "github:bfraboni/FastGaussianBlur";
       flake = false;
