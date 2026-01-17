@@ -36,9 +36,9 @@ Licensed: MIT
   exit 0
 }
 
-dunsitfy-all() {
+notify-all() {
   if [ "$EUID" -ne 0 ]; then
-    dunstify "$@"
+    notify-send "$@"
     return
   fi
 
@@ -46,9 +46,9 @@ dunsitfy-all() {
   for user_name in "${users[@]}"; do
     local
     sudo -u "$user_name" \
-      DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u $user_name)/bus" \
+      DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u "$user_name")/bus" \
       DISPLAY=":0" \
-      dunstify "$@"
+      notify-send "$@"
   done
 }
 
@@ -77,7 +77,7 @@ main() {
     fi
 
     cat $OUTPUT_FILE
-    dunsitfy-all -u 2 -t 6000 -i "$ICON" "$SUMMARY" "$(cat $OUTPUT_FILE)"
+    notify-all -u critical -t 6000 -i "$ICON" "$SUMMARY" "$(cat $OUTPUT_FILE)"
   fi
   rm $OUTPUT_FILE
   exit $exit_code

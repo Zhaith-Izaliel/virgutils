@@ -1,5 +1,7 @@
-{ pkgs, version }:
-
+{
+  pkgs,
+  version,
+}:
 pkgs.callPackage ../builder.nix {
   pname = "power-management";
 
@@ -12,10 +14,8 @@ pkgs.callPackage ../builder.nix {
   ];
 
   paths = with pkgs; [
-    dunst
-    gnugrep
+    libnotify
     sudo
     coreutils
   ];
 }
-

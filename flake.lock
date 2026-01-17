@@ -1,21 +1,5 @@
 {
   "nodes": {
-    "fast-blur": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1724016656,
-        "narHash": "sha256-TkQZi7VHa8xTnAq3vo8OjUOvF+CS/KruVlLtpNIMsyc=",
-        "owner": "bfraboni",
-        "repo": "FastGaussianBlur",
-        "rev": "49f0128469c3df89d728d3b94457108682682825",
-        "type": "github"
-      },
-      "original": {
-        "owner": "bfraboni",
-        "repo": "FastGaussianBlur",
-        "type": "github"
-      }
-    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
@@ -66,7 +50,6 @@
     },
     "root": {
       "inputs": {
-        "fast-blur": "fast-blur",
         "flake-parts": "flake-parts",
         "nixpkgs": "nixpkgs"
       }
