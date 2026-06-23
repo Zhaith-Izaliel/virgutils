@@ -8,7 +8,7 @@
   outputs =
     inputs@{ flake-parts, ... }:
     let
-      version = "1.19.0";
+      version = "1.20.0";
     in
     flake-parts.lib.mkFlake { inherit inputs; } (
       { ... }:

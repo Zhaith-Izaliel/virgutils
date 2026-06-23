@@ -3,7 +3,7 @@
 # Copyright (c) 2022 Virgil Ribeyre <https://github.com/Zhaith-Izaliel>
 # Licensed under an MIT License
 
-VERSION="1.19.0"
+VERSION="1.20.0"
 
 # Icons
 ICON="system-shutdown"
@@ -36,22 +36,6 @@ Licensed: MIT
   exit 0
 }
 
-notify-all() {
-  if [ "$EUID" -ne 0 ]; then
-    notify-send "$@"
-    return
-  fi
-
-  local users=($(users))
-  for user_name in "${users[@]}"; do
-    local
-    sudo -u "$user_name" \
-      DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u "$user_name")/bus" \
-      DISPLAY=":0" \
-      notify-send "$@"
-  done
-}
-
 #######################################
 # Main function of the script
 # Globals:
@@ -77,7 +61,7 @@ main() {
     fi
 
     cat $OUTPUT_FILE
-    notify-all -u critical -t 6000 -i "$ICON" "$SUMMARY" "$(cat $OUTPUT_FILE)"
+    notify-send -u critical -t 6000 -i "$ICON" "$SUMMARY" "$(cat $OUTPUT_FILE)"
   fi
   rm $OUTPUT_FILE
   exit $exit_code
